@@ -1,0 +1,100 @@
+version: '3.8'  # Phiên bản cú pháp Docker Compose
+
+services:
+  # -------------------------------
+  # 🗄️ Dịch vụ MongoDB (Cơ sở dữ liệu)
+  # -------------------------------
+  mongo:
+    image: mongo:6.0                     # Dùng image chính thức của Mongo
+    restart: always                      # Tự khởi động lại nếu bị lỗi
+    container_name: mongo                # Đặt tên container
+    ports:
+      - "27017:27017"                    # Map port 27017 (host ↔ container)
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root   # Tên user root
+      MONGO_INITDB_ROOT_PASSWORD: example # Mật khẩu root
+    volumes:
+      - mongo_data:/data/db              # Lưu dữ liệu ra volume để không mất khi xóa container
+
+  # -------------------------------
+  # 🐇 Dịch vụ RabbitMQ (Message Broker)
+  # -------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management         # Bản có giao diện web quản lý
+    restart: always
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"                      # Cổng giao tiếp AMQP
+      - "15672:15672"                    # Cổng truy cập giao diện web
+    environment:
+      RABBITMQ_DEFAULT_USER: guest       # User mặc định
+      RABBITMQ_DEFAULT_PASS: guest       # Password mặc định
+
+  # -------------------------------
+  # 🔐 Dịch vụ Auth (Đăng ký / Đăng nhập)
+  # -------------------------------
+  auth:
+    build: ./auth                        # Build từ thư mục ./auth (chứa Dockerfile)
+    restart: always
+    container_name: auth
+    ports:
+      - "3000:3000"                      # Mở port 3000
+    environment:
+      - MONGODB_AUTH_URI=mongodb://root:example@mongo:27017/auth_db?authSource=admin
+      - JWT_SECRET=mySecret123           # Key để mã hóa JWT
+    depends_on:
+      - mongo                            # Chạy sau khi MongoDB sẵn sàng
+
+  # -------------------------------
+  # 📦 Dịch vụ Product
+  # -------------------------------
+  product:
+    build: ./product
+    restart: always
+    container_name: product
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_PRODUCT_URI=mongodb://root:example@mongo:27017/product_db?authSource=admin
+      - JWT_SECRET=mySecret123
+      - RABBITMQ_URI=amqp://rabbitmq:5672  # Kết nối đến RabbitMQ
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  # -------------------------------
+  # 🛒 Dịch vụ Order
+  # -------------------------------
+  order:
+    build: ./order
+    restart: always
+    container_name: order
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGODB_ORDER_URI=mongodb://root:example@mongo:27017/order_db?authSource=admin
+      - JWT_SECRET=mySecret123
+      - RABBITMQ_URI=amqp://rabbitmq:5672
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  # -------------------------------
+  # 🌐 Dịch vụ API Gateway
+  # -------------------------------
+  api-gateway:
+    build: ./api-gateway
+    restart: always
+    container_name: api-gateway
+    ports:
+      - "3003:3003"                      # Mở port cho client truy cập
+    depends_on:
+      - auth
+      - product
+      - order
+
+# -------------------------------
+# 📂 Volume để lưu dữ liệu Mongo
+# -------------------------------
+volumes:
+  mongo_data:
