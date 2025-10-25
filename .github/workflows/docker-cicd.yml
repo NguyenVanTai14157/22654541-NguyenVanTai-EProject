@@ -2,7 +2,7 @@ name: CI/CD Docker Pipeline
 
 on:
   push:
-    branches: [ "main" ]   # Tự động chạy khi push lên nhánh main
+    branches: [ "main" ]   # Tự động chạy khi push lên main
   pull_request:             # Hoặc khi có pull request
 
 jobs:
