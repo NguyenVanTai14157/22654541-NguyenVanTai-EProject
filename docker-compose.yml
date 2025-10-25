@@ -1,4 +1,4 @@
-version: '3.8'  # Phiên bản cú pháp Docker Compose
+version: '3.8'  # Phiên bản cú pháp Docker Composee
 
 services:
   # -------------------------------
