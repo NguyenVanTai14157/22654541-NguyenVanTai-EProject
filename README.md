@@ -54,14 +54,21 @@ Push workflow lên GitHub để chạy CI/CD
 git add .github/workflows/docker-cicd.yml
 git commit -m "update6"
 git push origin main
-Thao tác với github Action: Thực hiện CI/CD với dự án
+
+# 🧩 Thao tác với GitHub Action: **Thực hiện CI/CD với dự án**
+
 ![](./public/18.png)
 ![](./public/19.png)
 ![](./public/20.png)
 ![](./public/21.png)
-CI/CD liên kết với Docker
+
+---
+
+# 🐳 CI/CD **liên kết với Docker**
+
 ![](./public/22.png)
 ![](./public/23.png)
+
 
 
 
