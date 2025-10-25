@@ -10,9 +10,6 @@ services:
     container_name: mongo                # Đặt tên container
     ports:
       - "27017:27017"                    # Map port 27017 (host ↔ container)
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root   # Tên user root
-      MONGO_INITDB_ROOT_PASSWORD: example # Mật khẩu root
     volumes:
       - mongo_data:/data/db              # Lưu dữ liệu ra volume để không mất khi xóa container
 
