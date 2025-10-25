@@ -38,6 +38,31 @@ Bước 8: bổ sung code vào 2 file productController.js và productRoutes.js 
 ![](./public/16.png)
 Bước 9: Kiểm tra trên postman
 ![](./public/17.png)
+CI/CD
+Tạo token bên Docker Hub
+Copy token vào GitHub
+Vào GitHub
+Chọn responsitory
+Chọn setting -> secrets and variables -> Actions ->
+new responsitory secret -> Names(DOCKER_NAME), secret(username đăng nhập bên docker hub)
+new responsitory secret -> Names(DOCKER_PASSWORD), secret(token của Docker Hub)
+Tạo thư mục .GitHub/workflows
+Tạo file docker-cicd.yml
+Điền thông tin cho file docker-cicd.yml
+Push workflow lên GitHub để chạy CI/CD
+
+git add .github/workflows/docker-cicd.yml
+git commit -m "update6"
+git push origin main
+Thao tác với github Action: Thực hiện CI/CD với dự án
+![](./public/18.png)
+![](./public/19.png)
+![](./public/20.png)
+![](./public/21.png)
+CI/CD liên kết với Docker
+![](./public/22.png)
+![](./public/23.png)
+
 
 
 
