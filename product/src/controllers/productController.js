@@ -12,6 +12,13 @@ class ProductController {
     this.getOrderStatus = this.getOrderStatus.bind(this);
     this.ordersMap = new Map();
   }
+  async getProductById(req, res, next) {
+    const product = await Product.findById(req.params.id); // tìm sản phẩm theo id
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }   
+    return res.status(200).json(product);
+  }
 
   async createProduct(req, res, next) {
     try {
@@ -34,32 +41,14 @@ class ProductController {
       res.status(500).json({ message: "Server error" });
     }
   }
-
-  async getProductById(req, res, next) {
-    try {
-      const token = req.headers.authorization;
-      if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
-      const product = await Product.findById(req.params.id); // tìm sản phẩm theo id
-
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-      res.status(200).json(product);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server error" });
-    } 
-  }
-
+  
   async createOrder(req, res, next) {
     try {
       const token = req.headers.authorization;
       if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
       }
-  
+    
       const { ids } = req.body;
       const products = await Product.find({ _id: { $in: ids } });
   
