@@ -74,7 +74,7 @@ services:
     environment:
       - MONGODB_ORDER_URI=mongodb://root:example@mongo:27017/order_db?authSource=admin
       - JWT_SECRET=mySecret123
-      - RABBITMQ_URI=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://rabbitmq:5672
     depends_on:
       - mongo
       - rabbitmq

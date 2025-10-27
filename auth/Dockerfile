@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Cài đặt toàn bộ các thư viện được khai báo trong package.json
-RUN npm install
+RUN npm install --production
 
 # Copy toàn bộ mã nguồn từ máy thật (host) vào container
 COPY . .
