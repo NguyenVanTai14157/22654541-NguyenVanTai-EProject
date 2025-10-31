@@ -12,14 +12,14 @@ class ProductController {
     this.getOrderStatus = this.getOrderStatus.bind(this);
     this.ordersMap = new Map();
   }
-  async getProductById(req, res, next) {
-    const product = await Product.findById(req.params.id); // tìm sản phẩm theo id
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }   
-    return res.status(200).json(product);
+  async getid(req,res,next){
+    const p=await Product.findById(req.params.id);
+    if(!p){
+      return res.status(404).json({message:"product not found"});
+    }
+    return res.status(200).json(p);
   }
-
+  
   async createProduct(req, res, next) {
     try {
       const token = req.headers.authorization;
