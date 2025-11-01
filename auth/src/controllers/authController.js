@@ -10,9 +10,9 @@ class AuthController {
   }
 
   async login(req, res) {
-    const { username, password } = req.body;
+    const { user, pass } = req.body;
 
-    const result = await this.authService.login(username, password);
+    const result = await this.authService.login(user, pass);
 
     if (result.success) {
       res.json({ token: result.token });
@@ -25,7 +25,7 @@ class AuthController {
     const user = req.body;
   
     try {
-      const existingUser = await this.authService.findUserByUsername(user.username);
+      const existingUser = await this.authService.findUserByUsername(user.user);
   
       if (existingUser) {
         console.log("Username already taken") //lỗi trên mongoose(mongodb shell)

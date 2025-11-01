@@ -13,7 +13,7 @@ class AuthService {
   }
 
   async findUserByUsername(username) {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({user: username });
     return user;
   }
   
@@ -24,7 +24,7 @@ class AuthService {
       return { success: false, message: "Invalid username or password" };
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.pass);
 
     if (!isMatch) {
       return { success: false, message: "Invalid username or password" };
@@ -37,14 +37,14 @@ class AuthService {
 
   async register(user) {
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
+    user.pass = await bcrypt.hash(user.pass, salt);
 
     return await this.userRepository.createUser(user);
   }
 
   async deleteTestUsers() {
     // Delete all users with a username that starts with "test"
-    await User.deleteMany({ username: /^test/ });
+    await User.deleteMany({ user: /^test/ });
   }
 }
 
