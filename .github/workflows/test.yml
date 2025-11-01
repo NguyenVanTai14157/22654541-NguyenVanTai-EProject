@@ -93,15 +93,15 @@ jobs:
               ports:
                 - "3003:3003"
             auth:
-              image: ${{ secrets.DOCKER_USERNAME }}/auth-service:latest
+              image: ${{ secrets.DOCKER_USERNAME }}/auth:latest
               ports:
                 - "3000:3000"
             product:
-              image: ${{ secrets.DOCKER_USERNAME }}/product-service:latest
+              image: ${{ secrets.DOCKER_USERNAME }}/product:latest
               ports:
                 - "3001:3001"
             order:
-              image: ${{ secrets.DOCKER_USERNAME }}/order-service:latest
+              image: ${{ secrets.DOCKER_USERNAME }}/order:latest
               ports:
                 - "3002:3002"
           EOF
