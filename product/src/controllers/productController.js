@@ -13,13 +13,7 @@ class ProductController {
     this.ordersMap = new Map();
   }
   
-  async getid(req,res,next){
-    const p=await Product.findById(req.params.id);
-    if(!p){
-      res.status(404).json({message:"product not foundd"});
-    }
-    return res.status(200).json(p);
-  }
+  
   async createProduct(req, res, next) {
     try {
       const token = req.headers.authorization;
